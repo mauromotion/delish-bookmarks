@@ -1,0 +1,5 @@
+[tool.ruff.lint]
+# Disable the F401 (unused import) rule
+# ignore = ["I001", "F401"] # the first rule is "ignore unsorted imports", the second is "ignore unused imports"
+# Enable automatic fixing
+unfixable = ["F401"]
