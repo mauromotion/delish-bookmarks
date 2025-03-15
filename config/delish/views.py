@@ -16,6 +16,9 @@ from .serializers import UserSerializer
 User = get_user_model()
 
 
+## Authentication ##
+
+
 @api_view(["POST"])
 def login(request):
     user = get_object_or_404(User, username=request.data["username"])
