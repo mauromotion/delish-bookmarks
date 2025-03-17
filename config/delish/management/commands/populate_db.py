@@ -8,18 +8,20 @@ from django.utils import lorem_ipsum
 class Command(BaseCommand):
     help = "Populates the db for development porpouses"
 
+    # get or create superuser
     def handle(self, *args, **kwargs):
-        # get or create superuser
         admin = User.objects.filter(username="admin").first()
         if not admin:
             admin = User.objects.create_superuser(
-                username="admin", password="arigato80"
+                username="admin", password="arigato80", email="admin@email.com"
             )
 
         # get or create user1
         user = User.objects.filter(username="user1").first()
         if not user:
-            user = User.objects.create_user(username="user1", password="password")
+            user = User.objects.create_user(
+                username="user1", password="password", email="user1@mail.com"
+            )
 
         # create "Unsorted" collection
         Collection.objects.create(user=user, name="Unsorted", description="")

@@ -15,29 +15,19 @@ class UserSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
+        fields = ["id", "name"]
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
+        fields = ["id", "name", "description"]
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
     bookmarks_with_tag = TagSerializer(many=True, read_only=True)
-    tags = bookmarks_with_tag
+    collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Bookmark
-        fields = (
-            "user",
-            "timestamp",
-            "url",
-            "title",
-            "description",
-            "favicon",
-            "note",
-            "collection",
-            "tags",
-            "is_unread",
-            "is_archived",
-        )
+        fields = "__all__"

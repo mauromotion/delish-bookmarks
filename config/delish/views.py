@@ -8,10 +8,12 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from .serializers import UserSerializer
+from delish.models import Bookmark
+
+from .serializers import BookmarkSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -50,3 +52,13 @@ def register(request):
 @permission_classes([IsAuthenticated])
 def test_token(request):
     return Response("passed for {}".format(request.user.email))
+
+
+## API ##
+@api_view(["GET"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def bookmark_list(request):
+    bookmarks = Bookmark.objects.all()
+    serializer = BookmarkSerializer(bookmarks, many=True)
+    return Response(serializer.data)

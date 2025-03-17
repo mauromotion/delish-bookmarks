@@ -43,5 +43,8 @@ class Bookmark(models.Model):
     is_unread = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ["timestamp"]
+
     def __str__(self):
         return f"Bookmark {self.id} saved by {self.user} on {self.timestamp.strftime('%b %d %Y, %I:%M %p')}"
