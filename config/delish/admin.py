@@ -8,7 +8,7 @@ admin.site.register(User)
 class BookmarkAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "user",
+        "owner",
         "timestamp",
         "url",
         "title",
@@ -32,14 +32,14 @@ admin.site.register(Bookmark, BookmarkAdmin)
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "name", "description")
+    list_display = ("id", "owner", "name", "description")
 
 
 admin.site.register(Collection, CollectionAdmin)
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "name")
+    list_display = ("id", "owner", "name")
 
 
 admin.site.register(Tag, TagAdmin)

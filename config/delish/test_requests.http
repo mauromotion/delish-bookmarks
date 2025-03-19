@@ -22,7 +22,7 @@ Authorization: Token c4a901c8f4b952edae5bee3e4f0b1d2f52ae3f90
 
 GET http://localhost:8000/bookmarks/ HTTP/1.1
 Content-Type: application/json
-Authorization: Token c4a901c8f4b952edae5bee3e4f0b1d2f52ae3f90
+Authorization: Token 0c545c18797a5bdabed3e29f89eb122a7bbdfa43
 
 ###
 

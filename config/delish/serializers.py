@@ -15,18 +15,18 @@ class UserSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ["id", "name"]
+        fields = ["id", "owner", "name"]
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ["id", "name", "description"]
+        fields = ["id", "owner", "name", "description"]
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
     bookmarks_with_tag = TagSerializer(many=True, read_only=True)
-    collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
+    # collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Bookmark

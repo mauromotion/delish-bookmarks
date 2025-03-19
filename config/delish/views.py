@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import generics, status
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import (
@@ -8,12 +8,17 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from delish.models import Bookmark
+from delish.models import Bookmark, Collection, Tag
 
-from .serializers import BookmarkSerializer, UserSerializer
+from .serializers import (
+    BookmarkSerializer,
+    CollectionSerializer,
+    TagSerializer,
+    UserSerializer,
+)
 
 User = get_user_model()
 
@@ -55,10 +60,79 @@ def test_token(request):
 
 
 ## API ##
+# Sanity check
 @api_view(["GET"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def bookmark_list(request):
-    bookmarks = Bookmark.objects.all()
-    serializer = BookmarkSerializer(bookmarks, many=True)
-    return Response(serializer.data)
+def api_root(request):
+    return Response({"message": "API Satus: OK"})
+
+
+# Retrieve all the bookmarks of the current user, POST a new bookmark
+class BookmarkListAPIView(generics.ListCreateAPIView):
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Bookmark.objects.all()
+        return Bookmark.objects.filter(owner=user)
+
+
+# Delete or modify a bookmark of the current user
+class BookmarkDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Bookmark.objects.all()
+        return Bookmark.objects.filter(owner=user)
+
+
+# Retrieve all the tags created by the current user, post new tags
+class TagListAPIView(generics.ListCreateAPIView):
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Tag.objects.all()
+        return Tag.objects.filter(owner=user)
+
+
+# Delete or modify a tag of the current user
+class TagDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TagSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Tag.objects.all()
+        return Tag.objects.filter(owner=user)
+
+
+# Retrieve all the collections created by the current user, create new collections
+class CollectionListAPIView(generics.ListCreateAPIView):
+    serializer_class = CollectionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Collection.objects.all()
+        return Collection.objects.filter(owner=user)
+
+
+# Delete or modify a collection of the current user
+class CollectionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CollectionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return Collection.objects.all()
+        return Collection.objects.filter(owner=user)
