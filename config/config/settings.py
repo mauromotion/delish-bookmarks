@@ -153,6 +153,7 @@ HUEY = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # Default Django port
     "http://localhost:6379",  # Huey port
+    "http://localhost:5173",  # Vite port
 ]
 
 CORS_ALLOW_CREDENTIALS = True
