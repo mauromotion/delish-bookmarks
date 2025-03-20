@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "huey.contrib.djhuey",
+    "corsheaders",
     "delish",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -147,3 +149,10 @@ HUEY = {
     "filename": "huey.db",  # location of the SQLite file
     # Optional: any other sqlite-specific kwargs can be added here
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",  # Default Django port
+    "http://localhost:6379",  # Huey port
+]
+
+CORS_ALLOW_CREDENTIALS = True
