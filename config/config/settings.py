@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "huey.contrib.djhuey",
     "delish",
 ]
 
@@ -134,4 +135,15 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+}
+
+HUEY = {
+    "huey_class": "huey.SqliteHuey",  # explicitly use SQLite storage
+    "name": "delish",
+    "results": True,
+    "store_none": False,
+    "immediate": False,
+    "utc": True,
+    "filename": "huey.db",  # location of the SQLite file
+    # Optional: any other sqlite-specific kwargs can be added here
 }

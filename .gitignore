@@ -1,1 +1,4 @@
 venv_delish/
+huey.db
+huey.db-shm
+huey.wal

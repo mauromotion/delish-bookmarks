@@ -24,10 +24,16 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ["id", "owner", "name", "description"]
 
 
-class BookmarkSerializer(serializers.ModelSerializer):
+class BookmarkListSerializer(serializers.ModelSerializer):
     bookmarks_with_tag = TagSerializer(many=True, read_only=True)
     # collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Bookmark
         fields = "__all__"
+
+
+class BookmarkCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bookmark
+        fields = ["url"]

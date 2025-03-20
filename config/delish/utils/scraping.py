@@ -1,37 +1,58 @@
 import favicon
 import requests
 from bs4 import BeautifulSoup
+from huey.contrib.djhuey import db_task
 from urltitle import URLTitleReader
+
+from delish.models import Bookmark
 
 
 # Get the title
-def get_title(url):
+@db_task()
+def get_title(bookmark_id):
+    try:
+        bookmark = Bookmark.objects.get(id=bookmark_id)
+    except Bookmark.DoesNotExist:
+        return
+
     try:
         reader = URLTitleReader(verify_ssl=True)
-        title = reader.title(url)
+        title = reader.title(bookmark.url)
+        bookmark.title = title
+        bookmark.save()
     except Exception:
-        title = ""
-    return title
+        pass
 
 
 # Get the favicon
-def get_favicon(url):
+@db_task()
+def get_favicon(bookmark_id):
+    try:
+        bookmark = Bookmark.objects.get(id=bookmark_id)
+    except Bookmark.DoesNotExist:
+        return
     try:
         user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36"
         headers = {"User-Agent": user_agent}
 
-        favicon_check = favicon.get(url, headers=headers, timeout=2)
+        favicon_check = favicon.get(bookmark.url, headers=headers, timeout=2)
         if favicon_check:
             url_favicon = favicon_check[0].url
+            bookmark.favicon = url_favicon
+            bookmark.save()
     except requests.exceptions.RequestException:
-        url_favicon = ""
-    return url_favicon
+        pass
 
 
 # Get a description
-def get_description(url):
+@db_task()
+def get_description(bookmark_id):
     try:
-        response = requests.get(url, timeout=2)
+        bookmark = Bookmark.objects.get(id=bookmark_id)
+    except Bookmark.DoesNotExist:
+        return
+    try:
+        response = requests.get(bookmark.url, timeout=2)
         soup = BeautifulSoup(response.text, features="lxml")
         metas = soup.find_all("meta", limit=10)
         description = next(
@@ -44,6 +65,7 @@ def get_description(url):
             ),
             "",  # Default to an empty string if no description is found
         )
+        bookmark.description = description
+        bookmark.save()
     except requests.exceptions.RequestException:
-        description = ""
-    return description
+        pass

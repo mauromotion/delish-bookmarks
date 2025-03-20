@@ -15,7 +15,8 @@ import delish.utils.scraping as scraping
 from delish.models import Bookmark, Collection, Tag
 
 from .serializers import (
-    BookmarkSerializer,
+    BookmarkCreateSerializer,
+    BookmarkListSerializer,
     CollectionSerializer,
     TagSerializer,
     UserSerializer,
@@ -69,7 +70,7 @@ def api_root(request):
 
 # Retrieve all the bookmarks of the current user, POST a new bookmark
 class BookmarkListAPIView(generics.ListCreateAPIView):
-    serializer_class = BookmarkSerializer
+    serializer_class = BookmarkListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -78,10 +79,30 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
             return Bookmark.objects.all()
         return Bookmark.objects.filter(owner=user)
 
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return BookmarkCreateSerializer
+        return BookmarkListSerializer
+
+    def perform_create(self, serializer):
+        unsorted_collection = Collection.objects.get(
+            owner=self.request.user, name="Unsorted"
+        )
+        bookmark = serializer.save(
+            owner=self.request.user, collection=unsorted_collection
+        )
+
+        bookmark.save()
+
+        # Enqueue async tasks to complete bookmark fields.
+        scraping.get_title(bookmark.id)
+        scraping.get_description(bookmark.id)
+        scraping.get_favicon(bookmark.id)
+
 
 # Delete or modify a bookmark of the current user
 class BookmarkDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = BookmarkSerializer
+    serializer_class = BookmarkListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

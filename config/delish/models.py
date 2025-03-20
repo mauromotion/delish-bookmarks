@@ -31,8 +31,8 @@ class Bookmark(models.Model):
         "User", on_delete=models.CASCADE, related_name="bookmarks"
     )
     timestamp = models.DateTimeField(auto_now_add=True)
-    url = models.URLField(default="", blank=True)
-    title = models.CharField(max_length=50, default="")
+    url = models.URLField()
+    title = models.CharField(max_length=50, default="", blank=True)
     description = models.CharField(max_length=100, default="", blank=True)
     favicon = models.URLField(default="", blank=True)
     note = models.TextField(default="", blank=True)
@@ -40,7 +40,6 @@ class Bookmark(models.Model):
         "Collection",
         on_delete=models.DO_NOTHING,
         related_name="bookmarks_in_collection",
-        default="Unsorted",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="bookmarks_with_tag")
     is_unread = models.BooleanField(default=False)
