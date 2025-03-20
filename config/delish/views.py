@@ -11,6 +11,7 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+import delish.utils.scraping as scraping
 from delish.models import Bookmark, Collection, Tag
 
 from .serializers import (
