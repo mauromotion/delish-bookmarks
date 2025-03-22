@@ -5,7 +5,9 @@ certifi==2025.1.31
 charset-normalizer==3.4.1
 Deprecated==1.2.18
 Django==5.1.7
+django-cors-headers==4.7.0
 djangorestframework==3.15.2
+djangorestframework_simplejwt==5.5.0
 favicon==0.7.0
 huey==2.5.3
 humanize==4.12.1
@@ -14,6 +16,7 @@ lxml==5.3.1
 packaging==24.2
 pikepdf==9.5.2
 pillow==11.1.0
+PyJWT==2.9.0
 requests==2.32.3
 soupsieve==2.6
 sqlparse==0.5.3

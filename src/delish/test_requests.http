@@ -1,5 +1,24 @@
 ###
 
+POST http://127.0.0.1:8000/api/token/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "arigato80"
+}
+
+###
+
+POST http://127.0.0.1:8000/api/token/refresh HTTP/1.1
+Content-Type: application/json
+
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0Mjc0MDIyMSwiaWF0IjoxNzQyNjUzODIxLCJqdGkiOiJlMDkzNjQ0YzMwYTI0NzI1ODkzNzUyMmFhMmU3ZWJkZiIsInVzZXJfaWQiOjF9.kSvVTwq7RAzB5ELx0YyjAsfJbWRHQKM8SAkDsnSZV_E"
+}
+
+###
+
 POST http://127.0.0.1:8000/login HTTP/1.1
 Content-Type: application/json
 
@@ -14,15 +33,9 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/test_token HTTP/1.1
-Content-Type: application/json
-Authorization: Token c4a901c8f4b952edae5bee3e4f0b1d2f52ae3f90
-
-###
-
 GET http://localhost:8000/bookmarks/ HTTP/1.1
 Content-Type: application/json
-Authorization: Token 0c545c18797a5bdabed3e29f89eb122a7bbdfa43
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyNjUzMTM0LCJpYXQiOjE3NDI2NTI4MzQsImp0aSI6ImJkOGRlN2NmYTA1MjQyZTI4YzYyZjYwYzczMzdhMjc0IiwidXNlcl9pZCI6MX0.L0trzWXhemQd_nIxhuQOPk4589TtKHH2PngTh7czzlI
 
 ###
 
