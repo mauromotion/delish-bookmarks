@@ -13,12 +13,10 @@ from .serializers import (
     BookmarkCreateSerializer,
     BookmarkListSerializer,
     CollectionSerializer,
-    TagSerializer,
+    TagCreateSerializer,
+    TagListSerializer,
     UserSerializer,
 )
-
-User = get_user_model()
-
 
 ## Authentication ##
 
@@ -110,7 +108,7 @@ class BookmarkDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 # Retrieve all the tags created by the current user, post new tags
 class TagListAPIView(generics.ListCreateAPIView):
-    serializer_class = TagSerializer
+    serializer_class = TagListSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -122,7 +120,7 @@ class TagListAPIView(generics.ListCreateAPIView):
 
 # Delete or modify a tag of the current user
 class TagDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = TagSerializer
+    serializer_class = TagCreateSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
