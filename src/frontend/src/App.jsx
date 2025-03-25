@@ -1,11 +1,12 @@
 import "./App.css";
 import Login from "./components/Login";
 import HomePage from "./components/HomePage";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const isAuthenticated = false;
+  const { accessToken, username } = useAuth();
 
-  return <>{!isAuthenticated ? <Login /> : <HomePage />}</>;
+  return <>{!accessToken ? <Login /> : <HomePage username={username} />}</>;
 }
 
 export default App;

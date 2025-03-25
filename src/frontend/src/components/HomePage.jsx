@@ -1,3 +1,7 @@
+import { useAuth } from "../hooks/useAuth";
+
 export default function HomePage() {
-  return <h1>Delish App</h1>;
+  const { username } = useAuth();
+
+  return <h1>Welcome, {username}</h1>;
 }
