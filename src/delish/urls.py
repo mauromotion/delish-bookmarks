@@ -1,16 +1,14 @@
 from django.urls import include, path
-from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import views
-from .views import MyTokenObtainPairView
+from .authentication import MyTokenObtainPairView, login, refresh_token, register
 
 urlpatterns = [
     path("", views.api_root),
-    path("login", views.login),
-    path("register", views.register),
+    path("login", login),
+    path("register", register),
     path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh", views.refresh_token, name="token_refresh"),
-    # path("api/token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/refresh", refresh_token, name="token_refresh"),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("bookmarks/", views.BookmarkListAPIView.as_view(), name="user-bookmarks"),
     path("bookmarks/<int:pk>", views.BookmarkDetailAPIView.as_view()),
