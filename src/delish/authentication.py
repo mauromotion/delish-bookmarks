@@ -1,5 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -36,11 +38,20 @@ def login(request):
         key="refresh_token",
         value=refresh_token,
         httponly=True,
-        secure=True,  # use secure=True in production (requires HTTPS)
-        samesite="Strict",  # or 'Lax' based on your requirements
+        secure=False,  # use secure=True in production (requires HTTPS)
+        samesite="Lax",  # or 'Lax' based on your requirements
         max_age=30 * 24 * 3600,
     )
 
+    return response
+
+
+@api_view(["POST"])
+def logout(request):
+    response = Response(
+        {"detail": "Logged out successfully."}, status=status.HTTP_200_OK
+    )
+    response.delete_cookie("refresh_token")
     return response
 
 
@@ -64,8 +75,8 @@ def register(request):
             key="refresh_token",
             value=str(refresh),
             httponly=True,  # Prevents JS access to the cookie
-            secure=True,  # Use HTTPS in production
-            samesite="Strict",  # Adjust based on your requirements
+            secure=False,  # Use HTTPS in production
+            samesite="Lax",  # Adjust based on your requirements
             max_age=30 * 24 * 3600,  # 30 days in seconds
         )
         return response
@@ -87,7 +98,10 @@ def refresh_token(request):
         # Create a new access token
         new_access_token = str(token.access_token)
 
-        return Response({"access": new_access_token}, status=status.HTTP_200_OK)
+        return Response(
+            {"access": new_access_token},
+            status=status.HTTP_200_OK,
+        )
 
     except InvalidToken:
         return Response(
@@ -97,3 +111,13 @@ def refresh_token(request):
 
     except TokenError:
         return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Obtain info of the logged in user
+class MeAPIView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user

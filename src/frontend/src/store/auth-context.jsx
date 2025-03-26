@@ -1,15 +1,62 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext } from "react";
+import { useEffect, useCallback } from "react";
 
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
-  const [username, setUsername] = useState(null);
+  const [userData, setUserData] = useState({
+    id: null,
+    username: null,
+    email: null,
+  });
 
+  // Get the current logged in user data (id, username, email)
+  const getUserData = useCallback(async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/me", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          "Get-User-Data failed: ",
+          errorData.detail || response.statusText,
+        );
+      }
+      const data = await response.json();
+
+      setUserData({
+        id: data.id,
+        username: data.username,
+        email: data.email,
+      });
+
+      console.log("Success: ", data);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }, [accessToken]);
+
+  // Every time we get an access token we fetch user data
+  useEffect(() => {
+    if (accessToken) {
+      getUserData();
+    }
+  }, [accessToken, getUserData]);
+
+  // Login the user
   const login = async (credentials) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/login", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -26,7 +73,35 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
-      setUsername(data.user.username);
+
+      console.log("Success: ", data);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  // Logout the user
+  const logout = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          "Logout failed: ",
+          errorData.detail || response.statusText,
+        );
+      }
+      const data = await response.json();
+
+      setAccessToken(null);
+      setUserData(null);
 
       console.log("Success: ", data);
     } catch (error) {
@@ -37,7 +112,7 @@ export const AuthProvider = ({ children }) => {
   // Refresh the access token
   const refresh = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/token/refresh", {
+      const response = await fetch("http://localhost:8000/api/token/refresh", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -60,13 +135,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  };
-
-  // Logout the user
-  const logout = () => {
-    setAccessToken(null);
-    setUsername(null);
-    // TODO: backend could clear the cookie?
   };
 
   // Fetch any endpoint including the access token, try to refresh the token if error 401
@@ -98,7 +166,7 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ accessToken, username, login, logout, refresh, authFetch }}
+      value={{ accessToken, userData, login, logout, refresh, authFetch }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,7 +1,8 @@
 ###
 
-POST http://127.0.0.1:8000/api/token/ HTTP/1.1
+POST http://localhost:8000/api/token/ HTTP/1.1
 Content-Type: application/json
+Credentials: "include"
 
 {
   "username": "admin",
@@ -10,26 +11,33 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/api/token/refresh HTTP/1.1
+POST http://localhost:8000/api/token/refresh HTTP/1.1
 Content-Type: application/json
+Credentials: "include"
 
 {
-  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0Mjc0MDIyMSwiaWF0IjoxNzQyNjUzODIxLCJqdGkiOiJlMDkzNjQ0YzMwYTI0NzI1ODkzNzUyMmFhMmU3ZWJkZiIsInVzZXJfaWQiOjF9.kSvVTwq7RAzB5ELx0YyjAsfJbWRHQKM8SAkDsnSZV_E"
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTU4NjUyMCwiaWF0IjoxNzQyOTk0NTIwLCJqdGkiOiJjMDNlODY2ZmI5ODQ0MTlkOTk3ZjdjZTFmM2JjYjYwYiIsInVzZXJfaWQiOjIsInVzZXJuYW1lIjoidXNlcjEifQ.jp1ylRo12a89LzO_QdPuPTthLKsYLq_1jxvCY2Edu-8"
 }
 
 ###
 
-POST http://127.0.0.1:8000/login HTTP/1.1
+POST http://localhost:8000/login HTTP/1.1
 Content-Type: application/json
 
 { "username": "user1", "password": "password" }
 
 ###
 
-POST http://127.0.0.1:8000/register HTTP/1.1
+POST http://localhost:8000/register HTTP/1.1
 Content-Type: application/json
 
 { "username": "antonio", "password": "pass1234!", "email": "antonio@mail.com" }
+
+###
+
+GET http://localhost:8000/api/me/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMDA1NjU3LCJpYXQiOjE3NDMwMDUzNTcsImp0aSI6IjBiNDNmYTk4NjYyYTRlNzVhOTUxODA1MGNkMWQ5ZmUzIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.P00_217lA4SZolDxXydp-6tbXZRmnZVCRZF866ztDRU
 
 ###
 
