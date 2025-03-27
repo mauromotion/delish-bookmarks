@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 
-export default function Login() {
+export default function Register() {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState(null);
 
-  const { login } = useAuth();
+  const { register } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const credentials = { username: username, password: password };
-    login(credentials);
+    const credentials = {
+      username: username,
+      password: password,
+      email: email,
+    };
+    register(credentials);
   }
 
   return (
@@ -24,12 +29,18 @@ export default function Login() {
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
+          type="email"
+          name="email"
+          placeholder="Enter Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
           type="password"
           name="password"
           placeholder="Enter Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
     </>
   );

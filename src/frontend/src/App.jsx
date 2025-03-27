@@ -1,5 +1,5 @@
 import "./App.css";
-import Login from "./components/Login";
+import InitialForm from "./components/InitialForm";
 import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import { useAuth } from "./hooks/useAuth";
@@ -18,7 +18,7 @@ function App() {
   return (
     <>
       <Header />
-      {!accessToken ? <Login /> : <HomePage username={username} />}
+      {!accessToken ? <InitialForm /> : <HomePage username={username} />}
     </>
   );
 }

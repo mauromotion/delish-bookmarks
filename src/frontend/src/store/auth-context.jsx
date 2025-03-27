@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     if (accessToken) {
       getUserData();
     }
-  }, [accessToken, getUserData]);
+  }, [accessToken, setAccessToken, getUserData]);
 
   // Login the user
   const login = async (credentials) => {
@@ -67,6 +67,35 @@ export const AuthProvider = ({ children }) => {
         const errorData = await response.json();
         throw new Error(
           "Login failed: ",
+          errorData.detail || response.statusText,
+        );
+      }
+      const data = await response.json();
+
+      setAccessToken(data.access);
+
+      console.log("Success: ", data);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  // Register the user
+  const register = async (credentials) => {
+    try {
+      const response = await fetch("http://localhost:8000/register", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          "Register failed: ",
           errorData.detail || response.statusText,
         );
       }
@@ -166,7 +195,15 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ accessToken, userData, login, logout, refresh, authFetch }}
+      value={{
+        accessToken,
+        userData,
+        login,
+        register,
+        logout,
+        refresh,
+        authFetch,
+      }}
     >
       {children}
     </AuthContext.Provider>
