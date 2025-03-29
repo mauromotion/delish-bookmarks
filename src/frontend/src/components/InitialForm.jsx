@@ -1,3 +1,4 @@
+import classes from "./InitialForm.module.css";
 import { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
@@ -13,11 +14,14 @@ export default function InitialForm() {
     setActiveForm("register");
   };
   return (
-    <div>
-      <button onClick={handleLoginClick}>Login</button>
-      <button onClick={handleRegisterClick}>Register</button>
+    <div className={classes.initialForm}>
       {activeForm === "login" && <Login />}
       {activeForm === "register" && <Register />}
+      <div className={classes.formNavLinks}>
+        <p onClick={handleLoginClick}>Login</p>
+        <span>or</span>
+        <p onClick={handleRegisterClick}>Register</p>
+      </div>
     </div>
   );
 }

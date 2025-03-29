@@ -1,9 +1,10 @@
-import { useAuth } from "../hooks/useAuth";
+import classes from "./HomePage.module.css";
+import BookmarksList from "./BookmarksList";
 
 export default function HomePage() {
-  const { userData } = useAuth();
-
-  const username = userData.username;
-
-  return <h1>Welcome, {username}</h1>;
+  return (
+    <div className={classes.homePage}>
+      <BookmarksList />
+    </div>
+  );
 }

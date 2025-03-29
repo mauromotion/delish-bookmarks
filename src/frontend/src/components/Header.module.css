@@ -1,0 +1,24 @@
+.header {
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid dimgray;
+  /* margin: 0 1rem 1.5rem 1rem; */
+}
+
+.logo {
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.nav p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

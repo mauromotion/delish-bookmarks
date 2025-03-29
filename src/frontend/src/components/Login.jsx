@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import classes from "./Forms.module.css";
 
 export default function Login() {
   const [username, setUsername] = useState(null);
@@ -16,7 +17,7 @@ export default function Login() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"

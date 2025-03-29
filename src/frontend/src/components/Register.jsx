@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import classes from "./Forms.module.css";
 
 export default function Register() {
   const [username, setUsername] = useState(null);
@@ -21,7 +22,7 @@ export default function Register() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"
