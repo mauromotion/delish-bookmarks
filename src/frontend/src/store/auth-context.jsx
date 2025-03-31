@@ -1,4 +1,5 @@
-import { useState, createContext, useEffect, useCallback } from "react";
+import { jwtDecode } from "jwt-decode";
+import { useState, createContext } from "react";
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
@@ -6,48 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({
     id: null,
     username: null,
-    email: null,
   });
-
-  // Get the current logged in user data (id, username, email)
-  const getUserData = useCallback(async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/me", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          "Get-User-Data failed: ",
-          errorData.detail || response.statusText,
-        );
-      }
-      const data = await response.json();
-
-      setUserData({
-        id: data.id,
-        username: data.username,
-        email: data.email,
-      });
-
-      console.log("Success: ", data);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  }, [accessToken]);
-
-  // Every time we get an access token we fetch user data
-  useEffect(() => {
-    if (accessToken) {
-      getUserData();
-    }
-  }, [accessToken, setAccessToken, getUserData]);
 
   // Login the user
   const login = async (credentials) => {
@@ -71,6 +31,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
+      const payload = jwtDecode(data.access);
+      setUserData({ id: payload.id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -100,6 +62,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
+      const payload = jwtDecode(data.access);
+      setUserData({ id: payload.id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -157,6 +121,8 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
+      const payload = jwtDecode(data.access);
+      setUserData({ id: payload.id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {

@@ -35,12 +35,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8000/api/me/ HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMDA1NjU3LCJpYXQiOjE3NDMwMDUzNTcsImp0aSI6IjBiNDNmYTk4NjYyYTRlNzVhOTUxODA1MGNkMWQ5ZmUzIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.P00_217lA4SZolDxXydp-6tbXZRmnZVCRZF866ztDRU
-
-###
-
 GET http://localhost:8000/bookmarks/ HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQyNjUzMTM0LCJpYXQiOjE3NDI2NTI4MzQsImp0aSI6ImJkOGRlN2NmYTA1MjQyZTI4YzYyZjYwYzczMzdhMjc0IiwidXNlcl9pZCI6MX0.L0trzWXhemQd_nIxhuQOPk4589TtKHH2PngTh7czzlI

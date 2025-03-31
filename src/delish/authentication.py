@@ -111,13 +111,3 @@ def refresh_token(request):
 
     except TokenError:
         return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-# Obtain info of the logged in user
-class MeAPIView(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
-
-    serializer_class = UserSerializer
-
-    def get_object(self):
-        return self.request.user

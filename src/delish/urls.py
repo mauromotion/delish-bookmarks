@@ -2,7 +2,6 @@ from django.urls import include, path
 
 from . import views
 from .authentication import (
-    MeAPIView,
     MyTokenObtainPairView,
     login,
     logout,
@@ -18,7 +17,6 @@ urlpatterns = [
     path("api/token", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh", refresh_token, name="token_refresh"),
     path("api-auth", include("rest_framework.urls", namespace="rest_framework")),
-    path("api/me/", MeAPIView.as_view(), name="obtain_user_info"),
     path("bookmarks", views.BookmarkListAPIView.as_view(), name="user-bookmarks"),
     path("bookmarks/<int:pk>", views.BookmarkDetailAPIView.as_view()),
     path("tags", views.TagListAPIView.as_view(), name="user-tags"),
