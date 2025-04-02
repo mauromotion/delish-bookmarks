@@ -157,6 +157,7 @@ export const AuthProvider = ({ children }) => {
 
     return response;
   };
+
   return (
     <AuthContext.Provider
       value={{

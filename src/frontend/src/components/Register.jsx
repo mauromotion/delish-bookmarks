@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import classes from "./Forms.module.css";
 
-export default function Register() {
+const Register = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
@@ -45,4 +45,6 @@ export default function Register() {
       </form>
     </>
   );
-}
+};
+
+export default Register;

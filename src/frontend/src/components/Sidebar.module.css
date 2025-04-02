@@ -1,3 +1,19 @@
 .sidebar {
   grid-column: 3/3;
 }
+
+.navSidebar {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid dimgray;
+}
+
+.isActive {
+  color: inherit;
+}
+
+.isNotActive {
+  color: dimgray;
+}

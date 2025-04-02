@@ -32,7 +32,7 @@ class Bookmark(models.Model):
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     url = models.URLField()
-    title = models.CharField(max_length=100, default="", blank=True)
+    title = models.CharField(max_length=150, default="", blank=True)
     description = models.CharField(max_length=250, default="", blank=True)
     favicon = models.URLField(default="", blank=True)
     note = models.TextField(default="", blank=True)

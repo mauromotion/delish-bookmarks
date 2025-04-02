@@ -77,7 +77,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 class BookmarkListSerializer(serializers.ModelSerializer):
     bookmarks_with_tag = TagListSerializer(many=True, read_only=True)
-    # collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
+    collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Bookmark

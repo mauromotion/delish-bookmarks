@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import classes from "./Forms.module.css";
 
-export default function Login() {
+const Login = () => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
@@ -34,4 +34,6 @@ export default function Login() {
       </form>
     </>
   );
-}
+};
+
+export default Login;

@@ -1,0 +1,45 @@
+.card {
+  margin: 1rem 0 1rem 0;
+  font-size: 16px;
+}
+
+.favicon {
+  width: 16px;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.title {
+  font-style: italic;
+  text-decoration: none;
+  color: lightseagreen;
+}
+
+.title:hover {
+  text-decoration: underline;
+}
+
+.title:visited {
+  color: lightseagreen;
+}
+
+.description {
+  font-size: 0.95rem;
+}
+
+.note {
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.collection {
+  color: skyblue;
+}
+
+.tags {
+  color: lemonchiffon;
+}
+
+.timestamp {
+  color: gray;
+}

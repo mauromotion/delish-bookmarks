@@ -1,7 +1,8 @@
 import { useAuth } from "../hooks/useAuth";
+import ButtonAddBookmark from "./ButtonAddBookmark";
 import classes from "./Header.module.css";
 
-export default function Header() {
+const Header = () => {
   const { logout, accessToken, userData } = useAuth();
 
   return (
@@ -11,6 +12,7 @@ export default function Header() {
       </div>
       {accessToken && (
         <nav className={classes.nav}>
+          <ButtonAddBookmark />
           <p>Bookmarks</p>
           <p>{userData.username}</p>
           <p onClick={logout}>Logout</p>
@@ -18,4 +20,6 @@ export default function Header() {
       )}
     </header>
   );
-}
+};
+
+export default Header;

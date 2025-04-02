@@ -3,7 +3,7 @@ import { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 
-export default function InitialForm() {
+const InitialForm = () => {
   const [activeForm, setActiveForm] = useState("login");
 
   const handleLoginClick = () => {
@@ -24,4 +24,6 @@ export default function InitialForm() {
       </div>
     </div>
   );
-}
+};
+
+export default InitialForm;
