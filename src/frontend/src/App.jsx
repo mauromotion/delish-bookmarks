@@ -20,7 +20,7 @@ function App() {
     return () => {
       clearTimeout(timer);
     };
-  }, [refresh]);
+  }, [accessToken, refresh]);
 
   // Refresh the access token if the page reloads
   useEffect(() => {
