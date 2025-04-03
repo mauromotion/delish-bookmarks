@@ -8,6 +8,20 @@ import SideBar from "./components/SideBar";
 function App() {
   const { accessToken, refresh } = useAuth();
 
+  // Set a timer to refresh the access token at 4'50"
+  useEffect(() => {
+    const timer = setTimeout(
+      () => {
+        refresh();
+        console.log("access token refreshed!");
+      },
+      (4 * 60 + 50) * 1000,
+    );
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [refresh]);
+
   // Refresh the access token if the page reloads
   useEffect(() => {
     if (!accessToken) {

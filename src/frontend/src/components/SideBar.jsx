@@ -17,19 +17,13 @@ const SideBar = () => {
     <div className={classes.sidebar}>
       <div className={classes.navSidebar}>
         <h4
-          className={`classes.label ${
-            tab === "collections" ? classes.isActive : classes.isNotActive
-          }
-          `}
+          className={`${classes.label} ${tab === "collections" ? classes.isActive : classes.isNotActive}`}
           onClick={handleCollectionsClick}
         >
           Collections
         </h4>
         <h4
-          className={`classes.label ${
-            tab === "tags" ? classes.isActive : classes.isNotActive
-          }
-          `}
+          className={`${classes.label} ${tab === "tags" ? classes.isActive : classes.isNotActive}`}
           onClick={handleTagsClick}
         >
           Tags

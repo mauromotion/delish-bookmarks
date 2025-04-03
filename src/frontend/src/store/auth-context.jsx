@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { useEffect, useCallback } from "react";
 import { useState, createContext } from "react";
 const AuthContext = createContext(undefined);
 
@@ -101,7 +102,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Refresh the access token
-  const refresh = async () => {
+  const refresh = useCallback(async function refresh() {
     try {
       const response = await fetch("http://localhost:8000/api/token/refresh", {
         method: "POST",
@@ -128,7 +129,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  };
+  }, []);
 
   // Fetch any endpoint including the access token, try to refresh the token if error 401
   const authFetch = async (url, options = {}) => {
