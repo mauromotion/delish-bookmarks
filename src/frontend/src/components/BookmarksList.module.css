@@ -2,10 +2,28 @@
   grid-column: 1 / span 2;
 }
 
+.tabs {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  align-items: center;
+}
 .list {
   border-top: 1px solid dimgray;
 }
 
 .list li {
   list-style: none;
+}
+
+.label:hover {
+  cursor: pointer;
+}
+
+.isActive {
+  color: inherit;
+}
+
+.isNotActive {
+  color: dimgray;
 }
