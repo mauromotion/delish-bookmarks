@@ -10,13 +10,17 @@ const BookmarksList = () => {
 
   // Fetch all bookmarks of the current user
 
+  // TODO: add query parameters to fetch filtered by collection and tags
   useEffect(() => {
     async function fetchBookmarks() {
-      const response = await authFetch("http://localhost:8000/bookmarks", {
-        headers: {
-          "Content-type": "application/json",
+      const response = await authFetch(
+        "http://localhost:8000/api/bookmarks?q=all",
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -33,8 +37,9 @@ const BookmarksList = () => {
     fetchBookmarks();
   }, []);
 
+  // TODO: add a "Read it Later" header that filters the bookmarks with a query
   return (
-    <div>
+    <div className={classes.bmList}>
       <h4>Bookmarks</h4>
       <div className={classes.list}>
         <ul>

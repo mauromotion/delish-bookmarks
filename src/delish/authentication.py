@@ -1,7 +1,6 @@
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -39,7 +38,7 @@ def login(request):
         value=refresh_token,
         httponly=True,
         secure=False,  # use secure=True in production (requires HTTPS)
-        samesite="Lax",  # or 'Lax' based on your requirements
+        samesite="Lax",  # 'Strict' or 'Lax' based on your requirements
         max_age=30 * 24 * 3600,
     )
 
@@ -84,6 +83,7 @@ def register(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_exempt
 @api_view(["POST"])
 def refresh_token(request):
     refresh_token = request.COOKIES.get("refresh_token")

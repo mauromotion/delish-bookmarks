@@ -8,7 +8,7 @@ const TagsList = () => {
 
   useEffect(() => {
     async function fetchTags() {
-      const response = await authFetch("http://localhost:8000/tags", {
+      const response = await authFetch("http://localhost:8000/api/tags", {
         headers: {
           "Content-type": "application/json",
         },
@@ -36,6 +36,7 @@ const TagsList = () => {
     fetchTags();
   }, []);
 
+  // TODO: make a list of 'a' elements that send a query parameter to BookmarksList.jsx when clicked
   return (
     <div className={classes.list}>
       <ul>

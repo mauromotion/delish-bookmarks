@@ -14,7 +14,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
+        # Add custom fields
         token["username"] = user.username
         # ...
 
@@ -76,8 +76,10 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 
 class BookmarkListSerializer(serializers.ModelSerializer):
-    bookmarks_with_tag = TagListSerializer(many=True, read_only=True)
-    collection = serializers.SlugRelatedField(read_only=True, slug_field="name")
+    tags = TagListSerializer(many=True, read_only=True)
+    collection = serializers.SlugRelatedField(
+        slug_field="name", queryset=Collection.objects.all()
+    )
 
     class Meta:
         model = Bookmark
@@ -85,6 +87,11 @@ class BookmarkListSerializer(serializers.ModelSerializer):
 
 
 class BookmarkCreateSerializer(serializers.ModelSerializer):
+    tags = TagListSerializer(many=True, read_only=True)
+    collection = serializers.SlugRelatedField(
+        slug_field="name", queryset=Collection.objects.all()
+    )
+
     class Meta:
         model = Bookmark
-        fields = ["url"]
+        fields = "__all__"

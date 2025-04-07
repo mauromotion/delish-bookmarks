@@ -1,5 +1,4 @@
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useCallback } from "react";
 import { useState, createContext } from "react";
 const AuthContext = createContext(undefined);
 
@@ -13,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   // Login the user
   const login = async (credentials) => {
     try {
-      const response = await fetch("http://localhost:8000/login", {
+      const response = await fetch("http://localhost:8000/api/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -44,7 +43,7 @@ export const AuthProvider = ({ children }) => {
   // Register the user
   const register = async (credentials) => {
     try {
-      const response = await fetch("http://localhost:8000/register", {
+      const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -75,7 +74,7 @@ export const AuthProvider = ({ children }) => {
   // Logout the user
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:8000/logout", {
+      const response = await fetch("http://localhost:8000/api/logout", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -102,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Refresh the access token
-  const refresh = useCallback(async function refresh() {
+  const refresh = async () => {
     try {
       const response = await fetch("http://localhost:8000/api/token/refresh", {
         method: "POST",
@@ -129,7 +128,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  }, []);
+  };
 
   // Fetch any endpoint including the access token, try to refresh the token if error 401
   const authFetch = async (url, options = {}) => {

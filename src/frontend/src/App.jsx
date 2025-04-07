@@ -1,5 +1,5 @@
 import InitialForm from "./components/InitialForm";
-import HomePage from "./components/HomePage";
+import BookmarksList from "./components/BookmarksList";
 import Header from "./components/Header";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
@@ -7,6 +7,13 @@ import SideBar from "./components/SideBar";
 
 function App() {
   const { accessToken, refresh } = useAuth();
+
+  // Refresh the access token if the page reloads
+  useEffect(() => {
+    if (!accessToken) {
+      refresh();
+    }
+  }, []);
 
   // Set a timer to refresh the access token at 4'50"
   useEffect(() => {
@@ -22,13 +29,6 @@ function App() {
     };
   }, [accessToken, refresh]);
 
-  // Refresh the access token if the page reloads
-  useEffect(() => {
-    if (!accessToken) {
-      refresh();
-    }
-  }, []);
-
   return (
     <div className="container">
       <Header />
@@ -36,7 +36,7 @@ function App() {
         <InitialForm />
       ) : (
         <div className="body-container">
-          <HomePage />
+          <BookmarksList />
           <SideBar />
         </div>
       )}

@@ -8,11 +8,14 @@ const Collections = () => {
 
   useEffect(() => {
     async function fetchCollections() {
-      const response = await authFetch("http://localhost:8000/collections", {
-        headers: {
-          "Content-type": "application/json",
+      const response = await authFetch(
+        "http://localhost:8000/api/collections",
+        {
+          headers: {
+            "Content-type": "application/json",
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -44,6 +47,7 @@ const Collections = () => {
     fetchCollections();
   }, []);
 
+  // TODO: make a list of 'a' elements that send a query parameter to BookmarksList.jsx when clicked
   return (
     <div className={classes.list}>
       <ul>

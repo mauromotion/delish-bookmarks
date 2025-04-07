@@ -28,9 +28,30 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Bookmark.objects.all()
-        return user.bookmarks.all()
+        queryset = user.bookmarks.all()
+        collection_query = self.request.query_params.get("collection")
+        tags_query = self.request.query_params.get("tags")
+        archived = self.request.query_params.get("is_archived")
+        unread = self.request.query_params.get("is_unread")
+
+        # TODO: clean up the logic
+        if not collection_query:
+            collection = Collection.objects.filter(owner=user)
+        else:
+            collection = Collection.objects.get(owner=user, name=collection_query)
+        if not tags_query:
+            tags = Tag.objects.filter(owner=user)
+        else:
+            tags = [t for t in tags_query]
+        if collection_query:
+            queryset = queryset.filter(collection=collection)
+        if tags_query:
+            queryset = queryset.filter(tags=tags)
+        if archived:
+            queryset = queryset.filter(is_archived=True)
+        if unread:
+            queryset = queryset.filter(is_unread=True)
+        return queryset
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -60,8 +81,7 @@ class BookmarkDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Bookmark.objects.all()
+
         return Bookmark.objects.filter(owner=user)
 
 
@@ -72,8 +92,7 @@ class TagListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Tag.objects.all()
+
         return user.tags.all()
 
 
@@ -84,8 +103,7 @@ class TagDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Tag.objects.all()
+
         return user.tags.all()
 
 
@@ -96,8 +114,7 @@ class CollectionListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Collection.objects.all()
+
         return user.collections.all()
 
 
@@ -108,6 +125,5 @@ class CollectionDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Collection.objects.all()
+
         return user.collections.all()
