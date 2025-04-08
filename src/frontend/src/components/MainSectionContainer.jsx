@@ -12,14 +12,16 @@ const MainSectionContainer = () => {
   async function fetchBookmarks(name, value) {
     const queryParams = new URLSearchParams();
 
-    // Tags can be multiple so we need to iterate
-    if (name === "tag") {
-      value.forEach((tag) => queryParams.append("tag", tag));
+    // // Tags can be multiple so we need to iterate
+    // if (name === "tag") {
+    //   value.forEach((tag) => queryParams.append("tag", tag));
 
-      // Otherwise we just append the single value
-    } else {
-      queryParams.append(name, value);
-    }
+    //   // Otherwise we just append the single value
+    // } else {
+    //   queryParams.append(name, value);
+    // }
+
+    queryParams.append(name, value);
 
     const response = await authFetch(
       `http://localhost:8000/api/bookmarks?${queryParams.toString()}`,

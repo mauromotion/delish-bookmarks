@@ -42,7 +42,7 @@ const BookmarksList = ({ bookmarks, fetchBookmarks }) => {
         <ul>
           {bookmarks.map((bm) => (
             <li key={bm.id}>
-              <BookmarkCard {...bm} />
+              <BookmarkCard {...bm} fetchBookmarks={fetchBookmarks} />
             </li>
           ))}
         </ul>

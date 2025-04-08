@@ -50,7 +50,7 @@ const Collections = ({ fetchBookmarks }) => {
     }
 
     fetchCollections();
-  });
+  }, []);
 
   return (
     <div className={classes.list}>

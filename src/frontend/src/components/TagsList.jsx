@@ -38,7 +38,7 @@ const TagsList = ({ fetchBookmarks }) => {
     }
 
     fetchTags();
-  });
+  }, []);
 
   return (
     <div className={classes.list}>

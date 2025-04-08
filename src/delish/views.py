@@ -39,10 +39,11 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
             collection = Collection.objects.filter(owner=user)
         else:
             collection = Collection.objects.get(owner=user, name=collection_query)
+        # TODO: fix tags filtering
         if not tags_query:
             tags = Tag.objects.filter(owner=user)
         else:
-            tags = [t for t in tags_query]
+            tags = Tag.objects.get(owner=user, name=tags_query)
         if collection_query:
             queryset = queryset.filter(collection=collection)
         if tags_query:

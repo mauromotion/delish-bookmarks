@@ -36,10 +36,19 @@
   color: skyblue;
 }
 
+.collection:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .tags {
   color: lemonchiffon;
 }
 
+.tags:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 .timestamp {
   color: gray;
 }
