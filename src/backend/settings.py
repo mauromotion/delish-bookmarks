@@ -178,4 +178,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite port
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",  # Default Django port
+    "http://localhost:6379",  # Huey port
+    "http://localhost:5173",  # Vite port
+]
+
+# CSRF_COOKIE_SAMESITE = "None"  # or 'None' if cross-site
+# SESSION_COOKIE_SAMESITE = "None"  # or 'None' if cross-site
+# CSRF_USE_SESSIONS = False  # Keep CSRF token in a cookie, not the session
+
 CORS_ALLOW_CREDENTIALS = True

@@ -2,10 +2,15 @@ import classes from "./CollectionsList.module.css";
 import { useAuth } from "../hooks/useAuth";
 import { useState, useEffect } from "react";
 
-const Collections = () => {
+const Collections = ({ fetchBookmarks }) => {
   const { authFetch } = useAuth();
   const [collections, setCollections] = useState([]);
 
+  const handleClickCollection = (value) => {
+    fetchBookmarks("collection", value);
+  };
+
+  // Fetch all the user's collections at component's mount
   useEffect(() => {
     async function fetchCollections() {
       const response = await authFetch(
@@ -45,14 +50,20 @@ const Collections = () => {
     }
 
     fetchCollections();
-  }, []);
+  });
 
-  // TODO: make a list of 'a' elements that send a query parameter to BookmarksList.jsx when clicked
   return (
     <div className={classes.list}>
       <ul>
         {collections.map((coll) => (
-          <li key={coll.id}>{coll.name} (0)</li>
+          <li key={coll.id}>
+            <p
+              className={classes.collectionLink}
+              onClick={() => handleClickCollection(coll.name)}
+            >
+              {coll.name} (0)
+            </p>
+          </li>
         ))}
       </ul>
     </div>

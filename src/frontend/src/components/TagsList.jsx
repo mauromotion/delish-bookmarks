@@ -2,10 +2,14 @@ import classes from "./TagsList.module.css";
 import { useAuth } from "../hooks/useAuth";
 import { useState, useEffect } from "react";
 
-const TagsList = () => {
+const TagsList = ({ fetchBookmarks }) => {
   const { authFetch } = useAuth();
   const [tags, setTags] = useState([]);
+  const handleClickTag = (value) => {
+    fetchBookmarks("tag", value);
+  };
 
+  // Fetch all the user's tags at component's mount
   useEffect(() => {
     async function fetchTags() {
       const response = await authFetch("http://localhost:8000/api/tags", {
@@ -34,14 +38,20 @@ const TagsList = () => {
     }
 
     fetchTags();
-  }, []);
+  });
 
-  // TODO: make a list of 'a' elements that send a query parameter to BookmarksList.jsx when clicked
   return (
     <div className={classes.list}>
       <ul>
         {tags.map((tag) => (
-          <li key={tag.id}>{tag.name}</li>
+          <li key={tag.id}>
+            <p
+              className={classes.tagLink}
+              onClick={() => handleClickTag(tag.name)}
+            >
+              #{tag.name}
+            </p>
+          </li>
         ))}
       </ul>
     </div>

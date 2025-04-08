@@ -1,51 +1,25 @@
 import classes from "./BookmarksList.module.css";
-import { useAuth } from "../hooks/useAuth";
 import { useState, useEffect } from "react";
 
 import BookmarkCard from "./BookmarkCard";
 
-const BookmarksList = () => {
-  const { authFetch } = useAuth();
-  const [bookmarks, setBookmarks] = useState([]);
+const BookmarksList = ({ bookmarks, fetchBookmarks }) => {
   const [tab, setTab] = useState("bookmarks");
 
-  async function fetchBookmarks(query) {
-    const response = await authFetch(
-      `http://localhost:8000/api/bookmarks${query}`,
-      {
-        headers: {
-          "Content-type": "application/json",
-        },
-      },
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        "Fetching bookmakrs failed: ",
-        errorData.detail || response.statusText,
-      );
-    }
-
-    const data = await response.json();
-    setBookmarks(data.results);
-  }
-
+  // Handlers
   const handleReadItLaterTabClick = () => {
     setTab("readItLater");
-    fetchBookmarks("?is_unread=True");
+    fetchBookmarks("is_unread", "True");
   };
 
   const handleBookmarksTabClick = () => {
     setTab("bookmarks");
-    fetchBookmarks("?q=all");
+    fetchBookmarks("q", "all");
   };
 
-  // TODO: Extrapolate the fetchBookmarks(query) function
-  // TODO: add query parameters to fetch filtered by collection and tags
   // Fetch all bookmarks of the current user at component mount
   useEffect(() => {
-    fetchBookmarks("?q=all");
+    fetchBookmarks("q", "all");
   }, []);
 
   return (

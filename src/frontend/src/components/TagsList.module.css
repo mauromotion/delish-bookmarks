@@ -1,3 +1,8 @@
 .list li {
   list-style-type: none;
 }
+
+.tagLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,9 +1,8 @@
 import InitialForm from "./components/InitialForm";
-import BookmarksList from "./components/BookmarksList";
 import Header from "./components/Header";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect } from "react";
-import SideBar from "./components/SideBar";
+import MainSectionContainer from "./components/MainSectionContainer";
 
 function App() {
   const { accessToken, refresh } = useAuth();
@@ -32,14 +31,7 @@ function App() {
   return (
     <div className="container">
       <Header />
-      {!accessToken ? (
-        <InitialForm />
-      ) : (
-        <div className="body-container">
-          <BookmarksList />
-          <SideBar />
-        </div>
-      )}
+      {!accessToken ? <InitialForm /> : <MainSectionContainer />}
     </div>
   );
 }
