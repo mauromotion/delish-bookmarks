@@ -8,6 +8,10 @@ const MainSectionContainer = () => {
   const { authFetch } = useAuth();
   const [bookmarks, setBookmarks] = useState([]);
 
+  const handleAddBookmarkClick = () => {
+    dialog.current.showModal();
+  };
+
   // Fetch and filter bookmarks
   async function fetchBookmarks(name, value) {
     const queryParams = new URLSearchParams();

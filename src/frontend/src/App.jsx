@@ -1,11 +1,17 @@
 import InitialForm from "./components/InitialForm";
+import ModalAddBookmark from "./components/ModalAddBookmark";
 import Header from "./components/Header";
 import { useAuth } from "./hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import MainSectionContainer from "./components/MainSectionContainer";
 
 function App() {
   const { accessToken, refresh } = useAuth();
+  const dialogRef = useRef(null);
+
+  const openModal = () => {
+    dialogRef.current.showModal();
+  };
 
   // Refresh the access token if the page reloads
   useEffect(() => {
@@ -29,10 +35,13 @@ function App() {
   }, [accessToken, refresh]);
 
   return (
-    <div className="container">
-      <Header />
-      {!accessToken ? <InitialForm /> : <MainSectionContainer />}
-    </div>
+    <>
+      <div className="container">
+        <ModalAddBookmark ref={dialogRef} />
+        <Header openModal={openModal} />
+        {!accessToken ? <InitialForm /> : <MainSectionContainer />}
+      </div>
+    </>
   );
 }
 
