@@ -8,10 +8,6 @@ const MainSectionContainer = () => {
   const { authFetch } = useAuth();
   const [bookmarks, setBookmarks] = useState([]);
 
-  const handleAddBookmarkClick = () => {
-    dialog.current.showModal();
-  };
-
   // Fetch and filter bookmarks
   async function fetchBookmarks(name, value) {
     const queryParams = new URLSearchParams();
@@ -45,7 +41,19 @@ const MainSectionContainer = () => {
     }
 
     const data = await response.json();
-    setBookmarks(data.results);
+
+    // Sort the bookmarks by creation, latest first
+    const orderedBookmarks = data.results.sort((a, b) => {
+      if (a.timestamp < b.timestamp) {
+        return 1;
+      }
+      if (a.timestamp > b.timestamp) {
+        return -1;
+      }
+      return 0;
+    });
+
+    setBookmarks(orderedBookmarks);
   }
 
   return (

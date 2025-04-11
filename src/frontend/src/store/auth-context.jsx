@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
       setAccessToken(data.access);
       const payload = jwtDecode(data.access);
-      setUserData({ id: payload.id, username: payload.username });
+      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 
       setAccessToken(data.access);
       const payload = jwtDecode(data.access);
-      setUserData({ id: payload.id, username: payload.username });
+      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(null);
-      setUserData(null);
+      setUserData({ id: null, username: null });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
 
       setAccessToken(data.access);
       const payload = jwtDecode(data.access);
-      setUserData({ id: payload.id, username: payload.username });
+      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {

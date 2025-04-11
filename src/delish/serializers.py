@@ -94,4 +94,5 @@ class BookmarkCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bookmark
+        read_only_fields = ["owner"]
         fields = "__all__"
