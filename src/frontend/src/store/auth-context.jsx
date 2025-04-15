@@ -180,21 +180,19 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
+  const ctxValue = {
+    accessToken,
+    userData,
+    login,
+    register,
+    logout,
+    refresh,
+    authFetch,
+    loading,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        accessToken,
-        userData,
-        login,
-        register,
-        logout,
-        refresh,
-        authFetch,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={ctxValue}>{children}</AuthContext.Provider>
   );
 };
 
