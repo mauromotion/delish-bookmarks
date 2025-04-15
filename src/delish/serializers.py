@@ -73,6 +73,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
         fields = ["id", "owner", "name", "description"]
+        unique_together = ("owner", "name")
 
 
 class BookmarkListSerializer(serializers.ModelSerializer):

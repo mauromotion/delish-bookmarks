@@ -1,5 +1,4 @@
 import classes from "./CollectionsList.module.css";
-// import { useAuth } from "../hooks/useAuth";
 import { useContext } from "react";
 import DataContext from "../../store/data-context";
 

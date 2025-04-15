@@ -21,7 +21,7 @@ const BookmarksList = () => {
   // Fetch all bookmarks of the current user at component mount
   useEffect(() => {
     fetchBookmarks("q", "all");
-  }, []);
+  }, [fetchBookmarks]);
 
   return (
     <div className={classes.bmList}>

@@ -1,25 +1,46 @@
 import classes from "./ModalAddBookmark.module.css";
 import { createPortal } from "react-dom";
-import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  useContext,
+} from "react";
+import DataContext from "../../store/data-context.jsx";
 import { useAuth } from "../../hooks/useAuth";
 
 const ModalAddBookmark = forwardRef(({ children }, ref) => {
   const dialogRef = useRef();
-  const { authFetch, userData } = useAuth();
+  const { authFetch, userData, loading } = useAuth();
+  const { collections } = useContext(DataContext);
 
   const [bookmarkData, setBookmarkData] = useState({
-    owner: userData.id,
+    owner: userData?.id || null,
     url: "",
-    collection: "Programming",
+    collection: "",
     tags: [],
     note: "",
   });
 
+  // Load the userData when the Modal is rendered
+  useEffect(() => {
+    if (!loading && userData?.id) {
+      setBookmarkData((prev) => ({
+        ...prev,
+        owner: userData.id,
+      }));
+    }
+  }, [loading, userData]);
+
+  // Expose dialog's methods directly
   useImperativeHandle(ref, () => ({
     showModal: () => dialogRef.current.showModal(),
     close: () => dialogRef.current.close(),
   }));
 
+  // POST request function to add a bookmark
   async function addBookmark(bookmarkData) {
     try {
       const response = await authFetch("http://localhost:8000/api/bookmarks", {
@@ -46,6 +67,7 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
     }
   }
 
+  // Handling events functions
   const handleSubmit = (e) => {
     e.preventDefault();
     addBookmark(bookmarkData);
@@ -53,6 +75,28 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
     dialogRef.current.close();
   };
 
+  const handleCancel = () => {
+    setBookmarkData({
+      owner: userData.id,
+      url: "",
+      collection: "",
+      tags: [],
+      note: "",
+    });
+    dialogRef.current.close();
+  };
+
+  // Check the state of the data and render "loading..."
+  {
+    if (loading) return <div>Loading...</div>;
+  }
+
+  // Check user authentication
+  if (!userData?.id) {
+    return <div>Error: User not authenticated.</div>;
+  }
+
+  // Render the Modal
   return createPortal(
     <dialog ref={dialogRef}>
       {children}
@@ -64,6 +108,7 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
             <input
               type="text"
               name="url"
+              value={bookmarkData.url}
               onChange={(e) =>
                 setBookmarkData((prevState) => ({
                   ...prevState,
@@ -74,16 +119,34 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
           </div>
           <div className={classes.formGroup}>
             <label htmlFor="collection">Collection</label>
-            <input type="text" name="collection" />
+            <select
+              type="text"
+              name="collection"
+              defaultValue={bookmarkData.collection}
+              onChange={(e) =>
+                setBookmarkData((prevState) => ({
+                  ...prevState,
+                  collection: e.target.value,
+                }))
+              }
+            >
+              <option value="">--select a collection--</option>
+              {collections.map((coll) => (
+                <option key={coll.id} value={coll.name}>
+                  {coll.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className={classes.formGroup}>
             <label htmlFor="tags">Tags</label>
-            <input type="text" name="tags" />
+            <input type="text" name="tags" defaultValue={bookmarkData.tags} />
           </div>
           <div className={classes.formGroup}>
             <label htmlFor="note">Note</label>
             <textarea
               name="note"
+              value={bookmarkData.note}
               rows="5"
               cols="33"
               onChange={(e) =>
@@ -107,7 +170,9 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
           <button className={classes.saveButton} formMethod="submit">
             Save
           </button>
-          <button formMethod="dialog">Cancel</button>
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
         </div>
       </form>
     </dialog>,

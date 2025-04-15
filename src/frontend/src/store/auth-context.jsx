@@ -1,13 +1,62 @@
 import { jwtDecode } from "jwt-decode";
-import { useState, useCallback, createContext } from "react";
+import { useState, useEffect, useCallback, createContext } from "react";
 const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({
     id: null,
     username: null,
   });
+
+  // Refresh the access token
+  const refresh = useCallback(async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/token/refresh", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Token refresh failed");
+      }
+      const data = await response.json();
+
+      setAccessToken(data.access);
+      const payload = jwtDecode(data.access);
+      setUserData({ id: payload.user_id, username: payload.username });
+
+      console.log("Success at refreshing the access token: ", data);
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      setAccessToken(null);
+      setUserData({ id: null, username: null });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  // Set a timer to refresh the access token at 4'50"
+  useEffect(() => {
+    const timer = setTimeout(
+      () => {
+        refresh();
+        console.log("access token refreshed!");
+      },
+      (4 * 60 + 50) * 1000,
+    );
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [accessToken, refresh]);
 
   // Login the user
   const login = async (credentials) => {
@@ -100,36 +149,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Refresh the access token
-  const refresh = useCallback(async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/token/refresh", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          "Refresh token failed: ",
-          errorData.detail || response.statusText,
-        );
-      }
-      const data = await response.json();
-
-      setAccessToken(data.access);
-      const payload = jwtDecode(data.access);
-      setUserData({ id: payload.user_id, username: payload.username });
-
-      console.log("Success: ", data);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  }, []);
-
   // Fetch any endpoint including the access token, try to refresh the token if error 401
   const authFetch = async (url, options = {}) => {
     // Ensure cookies are sent
@@ -168,6 +187,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         refresh,
         authFetch,
+        loading,
       }}
     >
       {children}

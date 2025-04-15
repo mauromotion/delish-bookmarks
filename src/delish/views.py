@@ -64,12 +64,17 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
         return BookmarkListSerializer
 
     def perform_create(self, serializer):
-        unsorted_collection = Collection.objects.get(
-            owner=self.request.user, name="Unsorted"
-        )
-        bookmark = serializer.save(
-            owner=self.request.user, collection=unsorted_collection
-        )
+        collection_name = self.request.data.get("collection")
+        if collection_name != "Unsorted":
+            collection = Collection.objects.get(
+                owner=self.request.user, name=collection_name
+            )
+        else:
+            collection = Collection.objects.get(
+                owner=self.request.user, name="Unsorted"
+            )
+
+        bookmark = serializer.save(owner=self.request.user, collection=collection)
 
         bookmark.save()
 

@@ -2,45 +2,33 @@ import InitialForm from "./components/InitialForm/InitialForm";
 import ModalAddBookmark from "./components/ModalAddBookmark/ModalAddBookmark";
 import Header from "./components/Header/Header";
 import { useAuth } from "./hooks/useAuth";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import MainSectionContainer from "./components/MainSectionContainer/MainSectionContainer";
 import { DataProvider } from "./store/data-context";
 
 function App() {
-  const { accessToken, refresh } = useAuth();
+  const { loading, userData } = useAuth();
   const dialogRef = useRef(null);
 
   const openModal = () => {
     dialogRef.current.showModal();
   };
 
-  // Refresh the access token if the page reloads
-  useEffect(() => {
-    if (!accessToken) {
-      refresh();
-    }
-  }, []);
+  // Check the state of the data and render "loading..."
+  {
+    if (loading) return <div>Loading...</div>;
+  }
 
-  // Set a timer to refresh the access token at 4'50"
-  useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        refresh();
-        console.log("access token refreshed!");
-      },
-      (4 * 60 + 50) * 1000,
-    );
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [accessToken, refresh]);
-
+  // Check user authentication
+  if (!userData?.id) {
+    return <div>Error: User not authenticated.</div>;
+  }
   return (
     <DataProvider>
       <div className="container">
         <ModalAddBookmark ref={dialogRef} />
         <Header openModal={openModal} />
-        {!accessToken ? <InitialForm /> : <MainSectionContainer />}
+        {!userData ? <InitialForm /> : <MainSectionContainer />}
       </div>
     </DataProvider>
   );
