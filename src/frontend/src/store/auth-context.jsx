@@ -10,6 +10,16 @@ export const AuthProvider = ({ children }) => {
     username: null,
   });
 
+  // Get user data from the access token
+  useEffect(() => {
+    if (accessToken) {
+      const payload = jwtDecode(accessToken);
+      setUserData({ id: payload.user_id, username: payload.username });
+    } else {
+      setUserData({ id: null, username: null });
+    }
+  }, [accessToken]);
+
   // Refresh the access token
   const refresh = useCallback(async () => {
     try {
@@ -27,14 +37,11 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
-      const payload = jwtDecode(data.access);
-      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success at refreshing the access token: ", data);
     } catch (error) {
       console.error("Error refreshing token:", error);
       setAccessToken(null);
-      setUserData({ id: null, username: null });
     } finally {
       setLoading(false);
     }
@@ -80,8 +87,6 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
-      const payload = jwtDecode(data.access);
-      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -111,8 +116,6 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
-      const payload = jwtDecode(data.access);
-      setUserData({ id: payload.user_id, username: payload.username });
 
       console.log("Success: ", data);
     } catch (error) {
@@ -141,7 +144,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(null);
-      setUserData({ id: null, username: null });
+      // setUserData({ id: null, username: null });
 
       console.log("Success: ", data);
     } catch (error) {

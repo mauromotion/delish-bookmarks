@@ -7,7 +7,7 @@ import MainSectionContainer from "./components/MainSectionContainer/MainSectionC
 import { DataProvider } from "./store/data-context";
 
 function App() {
-  const { loading, userData } = useAuth();
+  const { loading, accessToken } = useAuth();
   const dialogRef = useRef(null);
 
   const openModal = () => {
@@ -19,16 +19,12 @@ function App() {
     if (loading) return <div>Loading...</div>;
   }
 
-  // Check user authentication
-  if (!userData?.id) {
-    return <div>Error: User not authenticated.</div>;
-  }
   return (
     <DataProvider>
       <div className="container">
         <ModalAddBookmark ref={dialogRef} />
         <Header openModal={openModal} />
-        {!userData ? <InitialForm /> : <MainSectionContainer />}
+        {!accessToken ? <InitialForm /> : <MainSectionContainer />}
       </div>
     </DataProvider>
   );

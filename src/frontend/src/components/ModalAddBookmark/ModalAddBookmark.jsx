@@ -92,9 +92,9 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
   }
 
   // Check user authentication
-  if (!userData?.id) {
-    return <div>Error: User not authenticated.</div>;
-  }
+  // if (!userData?.id) {
+  //   return <div>Error: User not authenticated.</div>;
+  // }
 
   // Render the Modal
   return createPortal(
