@@ -2,7 +2,8 @@
   list-style-type: none;
 }
 
-.tagLink:hover {
+.collectionLink:hover {
   text-decoration: underline;
   cursor: pointer;
+  color: lightblue;
 }

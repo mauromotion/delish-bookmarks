@@ -1,9 +1,9 @@
-import CollectionsList from "./CollectionsList";
-import TagsList from "./TagsList";
+import CollectionsList from "../CollectionsList/CollectionsList";
+import TagsList from "../TagsList/TagsList";
 import classes from "./Sidebar.module.css";
 import { useState } from "react";
 
-const SideBar = ({ fetchBookmarks }) => {
+const SideBar = () => {
   const [tab, setTab] = useState("collections");
 
   const handleCollectionsClick = () => {
@@ -30,9 +30,9 @@ const SideBar = ({ fetchBookmarks }) => {
         </h4>
       </div>
       {tab === "collections" ? (
-        <CollectionsList isActive={true} fetchBookmarks={fetchBookmarks} />
+        <CollectionsList isActive={true} />
       ) : (
-        <TagsList isActive={true} fetchBookmarks={fetchBookmarks} />
+        <TagsList isActive={true} />
       )}
     </div>
   );

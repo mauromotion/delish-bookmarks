@@ -29,29 +29,33 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         queryset = user.bookmarks.all()
-        collection_query = self.request.query_params.get("collection")
-        tags_query = self.request.query_params.get("tags")
-        archived = self.request.query_params.get("is_archived")
-        unread = self.request.query_params.get("is_unread")
+        params = self.request.query_params
 
-        # TODO: clean up the logic
-        if not collection_query:
-            collection = Collection.objects.filter(owner=user)
-        else:
-            collection = Collection.objects.get(owner=user, name=collection_query)
-        # TODO: fix tags filtering
-        if not tags_query:
-            tags = Tag.objects.filter(owner=user)
-        else:
-            tags = Tag.objects.get(owner=user, name=tags_query)
+        # Define search queries
+        collection_query = params.get("collection")
+        tag_query = params.get("tag")
+        is_archived = params.get("is_archived")
+        is_unread = params.get("is_unread")
+
+        # Filter by collection
         if collection_query:
-            queryset = queryset.filter(collection=collection)
-        if tags_query:
-            queryset = queryset.filter(tags=tags)
-        if archived:
+            queryset = queryset.filter(
+                collection__owner=user, collection__name=collection_query
+            )
+
+        # Filter by tags
+        if tag_query:
+            queryset = queryset.filter(tags__owner=user, tags__name=tag_query)
+
+        # Filter by archived
+        if is_archived and is_archived.lower() in ("true", "1"):
             queryset = queryset.filter(is_archived=True)
-        if unread:
+
+        # Fitler by unread
+        if is_unread and is_unread.lower() in ("true", "1"):
             queryset = queryset.filter(is_unread=True)
+
+        # WARN: I could off load the sorting to the back end here by using '.order_by("-timestamp")'
         return queryset
 
     def get_serializer_class(self):

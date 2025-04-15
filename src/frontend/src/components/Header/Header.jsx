@@ -1,4 +1,4 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import classes from "./Header.module.css";
 
 const Header = ({ openModal }) => {

@@ -1,9 +1,10 @@
-import InitialForm from "./components/InitialForm";
-import ModalAddBookmark from "./components/ModalAddBookmark";
-import Header from "./components/Header";
+import InitialForm from "./components/InitialForm/InitialForm";
+import ModalAddBookmark from "./components/ModalAddBookmark/ModalAddBookmark";
+import Header from "./components/Header/Header";
 import { useAuth } from "./hooks/useAuth";
 import { useEffect, useRef } from "react";
-import MainSectionContainer from "./components/MainSectionContainer";
+import MainSectionContainer from "./components/MainSectionContainer/MainSectionContainer";
+import { DataProvider } from "./store/data-context";
 
 function App() {
   const { accessToken, refresh } = useAuth();
@@ -35,13 +36,13 @@ function App() {
   }, [accessToken, refresh]);
 
   return (
-    <>
+    <DataProvider>
       <div className="container">
         <ModalAddBookmark ref={dialogRef} />
         <Header openModal={openModal} />
         {!accessToken ? <InitialForm /> : <MainSectionContainer />}
       </div>
-    </>
+    </DataProvider>
   );
 }
 

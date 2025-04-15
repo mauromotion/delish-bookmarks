@@ -38,7 +38,7 @@ def login(request):
         value=refresh_token,
         httponly=True,
         secure=False,  # use secure=True in production (requires HTTPS)
-        samesite="Lax",  # 'Strict' or 'Lax' based on your requirements
+        samesite="Strict",  # 'Strict' or 'Lax' based on your requirements
         max_age=30 * 24 * 3600,
     )
 

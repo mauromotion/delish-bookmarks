@@ -1,10 +1,11 @@
 import classes from "./BookmarksList.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import DataContext from "../../store/data-context";
+import BookmarkCard from "../BookmarkCard/BookmarkCard";
 
-import BookmarkCard from "./BookmarkCard";
-
-const BookmarksList = ({ bookmarks, fetchBookmarks }) => {
+const BookmarksList = () => {
   const [tab, setTab] = useState("bookmarks");
+  const { bookmarks, fetchBookmarks } = useContext(DataContext);
 
   // Handlers
   const handleReadItLaterTabClick = () => {
@@ -42,7 +43,7 @@ const BookmarksList = ({ bookmarks, fetchBookmarks }) => {
         <ul>
           {bookmarks.map((bm) => (
             <li key={bm.id}>
-              <BookmarkCard {...bm} fetchBookmarks={fetchBookmarks} />
+              <BookmarkCard {...bm} />
             </li>
           ))}
         </ul>

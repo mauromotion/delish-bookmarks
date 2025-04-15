@@ -1,23 +1,18 @@
-.bmList {
-  grid-column: 1 / span 2;
+.sidebar {
+  grid-column: 3/3;
 }
 
-.tabs {
+.navSidebar {
   display: flex;
   gap: 2rem;
   justify-content: flex-start;
   align-items: center;
-}
-.list {
-  border-top: 1px solid dimgray;
-}
-
-.list li {
-  list-style: none;
+  border-bottom: 1px solid dimgray;
 }
 
 .label:hover {
   cursor: pointer;
+  color: pink;
 }
 
 .isActive {

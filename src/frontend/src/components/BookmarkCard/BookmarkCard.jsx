@@ -1,9 +1,10 @@
 import classes from "./BookmarkCard.module.css";
-import { getRelativeTimeString } from "../utils/timeConversion";
-import { truncateString } from "../utils/truncateString";
+import { useContext } from "react";
+import { getRelativeTimeString } from "../../utils/timeConversion";
+import { truncateString } from "../../utils/truncateString";
+import DataContext from "../../store/data-context";
 
 const BookmarkCard = ({
-  fetchBookmarks,
   title,
   favicon,
   description,
@@ -18,6 +19,7 @@ const BookmarkCard = ({
   const titleTrimmed = truncateString(title, 100);
   const descTrimmed = truncateString(description, 150);
   const dateApprox = getRelativeTimeString(new Date(timestamp));
+  const { fetchBookmarks } = useContext(DataContext);
 
   const handleClickCollection = (value) => {
     fetchBookmarks("collection", value);

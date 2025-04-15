@@ -1,7 +1,7 @@
 import classes from "./InitialForm.module.css";
 import { useState } from "react";
-import Login from "./Login";
-import Register from "./Register";
+import Login from "../LoginRegisterForms/Login";
+import Register from "../LoginRegisterForms/Register";
 
 const InitialForm = () => {
   const [activeForm, setActiveForm] = useState("login");
