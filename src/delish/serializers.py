@@ -66,7 +66,8 @@ class TagListSerializer(serializers.ModelSerializer):
 class TagCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ["name"]
+        fields = ["id", "owner", "name"]
+        read_only_fields = ["owner"]
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -97,3 +98,13 @@ class BookmarkCreateSerializer(serializers.ModelSerializer):
         model = Bookmark
         read_only_fields = ["owner"]
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            self.fields["collection"].queryset = Collection.objects.filter(
+                owner=request.user
+            )
+            if "tags" in self.fields:
+                self.fields["tags"].queryset = Tag.objects.filter(owner=request.user)

@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 import delish.utils.scraping as scraping
-from delish.models import Bookmark, Collection, Tag
+from delish.models import Bookmark, Collection
 
 from .serializers import (
     BookmarkCreateSerializer,
@@ -63,15 +63,16 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
             return BookmarkCreateSerializer
         return BookmarkListSerializer
 
+    # Create new bookmark
     def perform_create(self, serializer):
         collection_name = self.request.data.get("collection")
-        if collection_name != "Unsorted":
+        if collection_name == "Unsorted":
             collection = Collection.objects.get(
-                owner=self.request.user, name=collection_name
+                owner=self.request.user, name="Unsorted"
             )
         else:
             collection = Collection.objects.get(
-                owner=self.request.user, name="Unsorted"
+                owner=self.request.user, name=collection_name
             )
 
         bookmark = serializer.save(owner=self.request.user, collection=collection)

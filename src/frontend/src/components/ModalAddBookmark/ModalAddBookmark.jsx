@@ -16,13 +16,15 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
   const { authFetch, userData, loading } = useAuth();
   const { collections } = useContext(DataContext);
 
-  const [bookmarkData, setBookmarkData] = useState({
-    owner: userData?.id || null,
+  const DEFAULT_bookmarkData = {
+    owner: userData.id,
     url: "",
-    collection: "",
+    collection: "Unsorted",
     tags: [],
     note: "",
-  });
+  };
+
+  const [bookmarkData, setBookmarkData] = useState(DEFAULT_bookmarkData);
 
   // Load the userData when the Modal is rendered
   useEffect(() => {
@@ -76,13 +78,7 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
   };
 
   const handleCancel = () => {
-    setBookmarkData({
-      owner: userData.id,
-      url: "",
-      collection: "",
-      tags: [],
-      note: "",
-    });
+    setBookmarkData(DEFAULT_bookmarkData);
     dialogRef.current.close();
   };
 
@@ -90,11 +86,6 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
   {
     if (loading) return <div>Loading...</div>;
   }
-
-  // Check user authentication
-  // if (!userData?.id) {
-  //   return <div>Error: User not authenticated.</div>;
-  // }
 
   // Render the Modal
   return createPortal(
