@@ -1,5 +1,5 @@
 import classes from "./BookmarksList.module.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import DataContext from "../../store/data-context";
 import BookmarkCard from "../BookmarkCard/BookmarkCard";
 
@@ -17,11 +17,6 @@ const BookmarksList = () => {
     setTab("bookmarks");
     fetchBookmarks("q", "all");
   };
-
-  // Fetch all bookmarks of the current user at component mount
-  useEffect(() => {
-    fetchBookmarks("q", "all");
-  }, [fetchBookmarks]);
 
   return (
     <div className={classes.bmList}>

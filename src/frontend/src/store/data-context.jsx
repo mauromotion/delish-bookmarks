@@ -144,7 +144,7 @@ export const DataProvider = ({ children }) => {
         fetchTags();
       }
     }
-  }, [accessToken, fetchBookmarks, fetchCollections, fetchTags]);
+  }, []);
 
   const ctxValue = {
     bookmarks: data.bookmarks,
