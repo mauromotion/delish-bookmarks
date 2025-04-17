@@ -9,9 +9,14 @@ const Collections = () => {
     fetchBookmarks("collection", value);
   };
 
+  const handleClickCreateCollection = () => {};
+
   return (
     <div className={classes.list}>
       <ul>
+        <button onClick={handleClickCreateCollection}>
+          Create New Collection
+        </button>
         {collections.map((coll) => (
           <li key={coll.id}>
             <p

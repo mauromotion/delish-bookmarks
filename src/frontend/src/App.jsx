@@ -8,10 +8,10 @@ import { DataProvider } from "./store/data-context";
 
 function App() {
   const { loading, accessToken } = useAuth();
-  const dialogRef = useRef(null);
+  const addBookmarkModalRef = useRef(null);
 
-  const openModal = () => {
-    dialogRef.current.showModal();
+  const openAddBookmarkModal = () => {
+    addBookmarkModalRef.current.showModal();
   };
 
   // Check the state of the data and render "loading..."
@@ -22,8 +22,8 @@ function App() {
   return (
     <DataProvider>
       <div className="container">
-        <ModalAddBookmark ref={dialogRef} />
-        <Header openModal={openModal} />
+        <ModalAddBookmark ref={addBookmarkModalRef} />
+        <Header openModal={openAddBookmarkModal} />
         {!accessToken ? <InitialForm /> : <MainSectionContainer />}
       </div>
     </DataProvider>
