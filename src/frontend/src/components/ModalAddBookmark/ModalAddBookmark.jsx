@@ -20,8 +20,10 @@ const ModalAddBookmark = forwardRef(({ children }, ref) => {
     owner: userData.id,
     url: "",
     collection: "Unsorted",
-    tags: [],
     note: "",
+    tags: [],
+    is_unread: false,
+    is_archived: false,
   };
 
   const [bookmarkData, setBookmarkData] = useState(DEFAULT_bookmarkData);

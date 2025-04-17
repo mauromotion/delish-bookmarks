@@ -61,11 +61,18 @@ def register(request):
         user = serializer.save()
         user.set_password(request.data["password"])
         user.save()
+
+        # create refresh & access tokens
         refresh = RefreshToken.for_user(user)
+        access = refresh.access_token
+
+        # add custom claims to access token
+        access["username"] = user.username
+        access["user_id"] = user.id
 
         response = Response(
             {
-                "access": str(refresh.access_token),
+                "access": str(access),
                 "user": serializer.data,
             },
             status=status.HTTP_201_CREATED,
@@ -73,10 +80,10 @@ def register(request):
         response.set_cookie(
             key="refresh_token",
             value=str(refresh),
-            httponly=True,  # Prevents JS access to the cookie
-            secure=False,  # Use HTTPS in production
-            samesite="Lax",  # Adjust based on your requirements
-            max_age=30 * 24 * 3600,  # 30 days in seconds
+            httponly=True,
+            secure=False,
+            samesite="Lax",
+            max_age=30 * 24 * 3600,
         )
         return response
 

@@ -28,15 +28,19 @@ class BookmarkListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = user.bookmarks.all()
+        queryset = Bookmark.objects.filter(owner=user)
         params = self.request.query_params
 
         # Define search queries
+        all_query = params.get("q")
         collection_query = params.get("collection")
         tag_query = params.get("tag")
         is_archived = params.get("is_archived")
         is_unread = params.get("is_unread")
 
+        # Default query for all bookmarks (just for consisentcy at the moment)
+        if all_query:
+            queryset = Bookmark.objects.filter(owner=user)
         # Filter by collection
         if collection_query:
             queryset = queryset.filter(

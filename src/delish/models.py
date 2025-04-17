@@ -13,6 +13,20 @@ class Collection(models.Model):
     name = models.CharField(max_length=50, default="Unsorted")
     description = models.TextField(default="", blank=True)
 
+    def delete(self, *args, **kwargs):
+        # Don't allow deletion of the "Unsorted" collection
+        if self.name == "Unsorted":
+            return False
+
+        # Find the Unsorted collection for the current user
+        unsorted = Collection.objects.get(owner=self.owner, name="Unsorted")
+
+        # Move all bookmarks from this collection to Unsorted
+        Bookmark.objects.filter(collection=self).update(collection=unsorted)
+
+        # Now proceed with the deletion
+        return super().delete(*args, **kwargs)
+
     # Create the "Unsorted" default collection at initialization
     def save(self, *args, **kwargs):
         if not self.pk and not Collection.objects.filter(owner=self.owner).exists():
@@ -44,7 +58,7 @@ class Bookmark(models.Model):
     note = models.TextField(default="", blank=True)
     collection = models.ForeignKey(
         "Collection",
-        on_delete=models.DO_NOTHING,
+        on_delete=models.PROTECT,
         related_name="bookmarks_in_collection",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="bookmarks_with_tag")
