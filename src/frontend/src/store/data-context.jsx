@@ -8,6 +8,7 @@ const DataContext = createContext({
   fetchBookmarks: () => {},
   fetchCollections: () => {},
   fetchTags: () => {},
+  setData: () => {},
 });
 
 export const DataProvider = ({ children }) => {
@@ -17,7 +18,7 @@ export const DataProvider = ({ children }) => {
     tags: [],
   });
 
-  const { authFetch, accessToken } = useAuth();
+  const { authFetch, accessToken, loading } = useAuth();
 
   // Fetch and filter bookmarks
   const fetchBookmarks = useCallback(
@@ -138,13 +139,13 @@ export const DataProvider = ({ children }) => {
   // Fetch user's data at mount
   useEffect(() => {
     {
-      if (accessToken) {
+      if (!loading && accessToken) {
         fetchBookmarks("q", "all");
         fetchCollections();
         fetchTags();
       }
     }
-  }, []);
+  }, [accessToken, loading]);
 
   const ctxValue = {
     bookmarks: data.bookmarks,
@@ -153,6 +154,7 @@ export const DataProvider = ({ children }) => {
     fetchBookmarks,
     fetchCollections,
     fetchTags,
+    setData,
   };
 
   return (

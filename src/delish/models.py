@@ -3,7 +3,15 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None  # Check if this is a new user being created
+        super().save(*args, **kwargs)
+
+        # Create Unsorted collection for new users after they've been saved
+        if is_new:
+            from .models import Collection  # Import here to avoid circular imports
+
+            Collection.objects.create(owner=self, name="Unsorted")
 
 
 class Collection(models.Model):

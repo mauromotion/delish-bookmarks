@@ -38,7 +38,7 @@ def login(request):
         value=refresh_token,
         httponly=True,
         secure=False,  # use secure=True in production (requires HTTPS)
-        samesite="Strict",  # 'Strict' or 'Lax' based on your requirements
+        samesite="Lax",  # 'Strict' or 'Lax' based on your requirements
         max_age=30 * 24 * 3600,
     )
 
@@ -59,6 +59,7 @@ def register(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
+
         user.set_password(request.data["password"])
         user.save()
 

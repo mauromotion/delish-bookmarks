@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  // Refresh the access token when the app is refreshed
   useEffect(() => {
     refresh();
   }, [refresh]);
@@ -116,6 +117,12 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       setAccessToken(data.access);
+
+      const payload = jwtDecode(data.access);
+      setUserData({
+        id: payload.user_id,
+        username: payload.username,
+      });
 
       console.log("Success: ", data);
     } catch (error) {
