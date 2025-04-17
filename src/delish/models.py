@@ -66,7 +66,7 @@ class Bookmark(models.Model):
     note = models.TextField(default="", blank=True)
     collection = models.ForeignKey(
         "Collection",
-        on_delete=models.PROTECT,
+        on_delete=models.DO_NOTHING,
         related_name="bookmarks_in_collection",
     )
     tags = models.ManyToManyField(Tag, blank=True, related_name="bookmarks_with_tag")
