@@ -2,10 +2,12 @@ import { useAuth } from "../../hooks/useAuth";
 import classes from "./Header.module.css";
 import DataContext from "../../store/data-context";
 import { useContext } from "react";
+import { useModalController } from "../../store/modals-context";
 
-const Header = ({ openModal }) => {
+const Header = () => {
   const { logout, accessToken, userData } = useAuth();
   const { setData } = useContext(DataContext);
+  const { openAddBookmark } = useModalController();
 
   // TODO: maybe I don't need to delete the data if I load it correctly at login?
   const handleLogout = () => {
@@ -21,7 +23,7 @@ const Header = ({ openModal }) => {
         </div>
         {accessToken && (
           <nav className={classes.nav}>
-            <button onClick={openModal}>Add boomkark</button>
+            <button onClick={openAddBookmark}>Add boomkark</button>
             <p>Bookmarks</p>
             <p>{userData.username}</p>
             <p onClick={handleLogout}>Logout</p>

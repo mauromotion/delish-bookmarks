@@ -1,22 +1,20 @@
 import classes from "./CollectionsList.module.css";
 import { useContext } from "react";
 import DataContext from "../../store/data-context";
+import { useModalController } from "../../store/modals-context";
 
 const Collections = () => {
   const { fetchBookmarks, collections } = useContext(DataContext);
+  const { openCreateCollection } = useModalController();
 
   const handleClickCollection = (value) => {
     fetchBookmarks("collection", value);
   };
 
-  const handleClickCreateCollection = () => {};
-
   return (
     <div className={classes.list}>
       <ul>
-        <button onClick={handleClickCreateCollection}>
-          Create New Collection
-        </button>
+        <button onClick={openCreateCollection}>Create New Collection</button>
         {collections.map((coll) => (
           <li key={coll.id}>
             <p

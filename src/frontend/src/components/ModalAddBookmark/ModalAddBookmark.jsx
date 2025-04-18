@@ -78,7 +78,6 @@ const ModalAddBookmark = forwardRef((props, ref) => {
     <Modal
       ref={ref}
       title="Add a new bookmark"
-      className={classes.modal}
       onClose={() => setBookmarkData(DEFAULT_bookmarkData)}
     >
       <form className={classes.form} onSubmit={handleSubmit}>
