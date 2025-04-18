@@ -2,7 +2,7 @@ import { useAuth } from "../../hooks/useAuth";
 import classes from "./Header.module.css";
 import DataContext from "../../store/data-context";
 import { useContext } from "react";
-import { useModalController } from "../../store/modals-context";
+import { useModalController } from "../../hooks/useModalController";
 
 const Header = () => {
   const { logout, accessToken, userData } = useAuth();

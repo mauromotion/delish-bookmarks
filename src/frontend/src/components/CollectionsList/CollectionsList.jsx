@@ -1,7 +1,7 @@
 import classes from "./CollectionsList.module.css";
 import { useContext } from "react";
 import DataContext from "../../store/data-context";
-import { useModalController } from "../../store/modals-context";
+import { useModalController } from "../../hooks/useModalController";
 
 const Collections = () => {
   const { fetchBookmarks, collections } = useContext(DataContext);
