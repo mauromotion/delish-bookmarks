@@ -1,11 +1,11 @@
 import classes from "./BookmarksList.module.css";
-import { useState, useContext } from "react";
-import DataContext from "../../store/data-context";
+import { useState } from "react";
+import { useDataCtx } from "../../hooks/useDataCtx";
 import BookmarkCard from "../BookmarkCard/BookmarkCard";
 
 const BookmarksList = () => {
   const [tab, setTab] = useState("bookmarks");
-  const { bookmarks, fetchBookmarks } = useContext(DataContext);
+  const { bookmarks, fetchBookmarks } = useDataCtx();
 
   // Handlers
   const handleReadItLaterTabClick = () => {

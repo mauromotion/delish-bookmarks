@@ -1,9 +1,8 @@
 import classes from "./TagsList.module.css";
-import { useContext } from "react";
-import DataContext from "../../store/data-context";
+import { useDataCtx } from "../../hooks/useDataCtx";
 
 const TagsList = () => {
-  const { fetchBookmarks, tags } = useContext(DataContext);
+  const { fetchBookmarks, tags } = useDataCtx();
   const handleClickTag = (value) => {
     fetchBookmarks("tag", value);
   };

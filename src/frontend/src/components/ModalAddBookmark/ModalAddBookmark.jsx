@@ -1,12 +1,12 @@
 import classes from "./ModalAddBookmark.module.css";
 import Modal from "../Modal/Modal.jsx";
-import { useState, useEffect, useContext, forwardRef } from "react";
-import DataContext from "../../store/data-context.jsx";
+import { useState, useEffect, forwardRef } from "react";
+import { useDataCtx } from "../../hooks/useDataCtx.jsx";
 import { useAuth } from "../../hooks/useAuth";
 
 const ModalAddBookmark = forwardRef((props, ref) => {
   const { authFetch, userData, loading } = useAuth();
-  const { collections } = useContext(DataContext);
+  const { collections } = useDataCtx();
 
   const DEFAULT_bookmarkData = {
     owner: userData.id,
